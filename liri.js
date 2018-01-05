@@ -3,11 +3,23 @@ var request = require("request");
 var Spotify = require("node-spotify-api");
 var twitter = require("twitter");
 var keys = require("./keys.js");
+var fs = require("fs");
 
 var spotify = new Spotify(keys.spotify);
 var client = new twitter(keys.twitter);
 
 var command = process.argv[2];
+var search = "";
+
+for (var i = 3; i < process.argv.length; i++) {
+    var searchAdd = process.argv[i];
+    if (i === 3) {
+        search += searchAdd;
+    }
+    else {
+        search += " " + searchAdd
+    }
+}
 
 switch (command) {
     case "my-tweets":
@@ -45,17 +57,7 @@ function myTweets() {
 }
 
 function spotifyThis() {
-    var search = "";
-    for (var i = 3; i < process.argv.length; i++) {
-        var searchAdd = process.argv[i];
-        if (i === 3) {
-            search += searchAdd;
-        }
-        else {
-            search += " " + searchAdd
-        }
-    }
-    console.log(search);
+    
     spotify.search({ type: "track", query: search }, function (err, data) {
         if (err) {
             throw err;
@@ -73,19 +75,8 @@ function spotifyThis() {
 }
 
 function movieThis() {
-    var movieName = "";
 
-
-    for (var i = 3; i < process.argv.length; i++) {
-        if (i === 3) {
-            movieName += process.argv[i];
-        }
-        else {
-            movieName += " " + process.argv[i];
-        }
-    }
-
-    var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+    var queryUrl = "http://www.omdbapi.com/?t=" + search + "&y=&plot=short&apikey=trilogy";
 
     request(queryUrl, function (error, response, body) {
         if (!error && response.statusCode === 200) {
@@ -103,4 +94,37 @@ function movieThis() {
         }
     });
 }
-function doWhatItSays() { }
+function doWhatItSays() {
+ fs.readFile("random.txt", "utf8", function(err, data){
+     if (err) {
+         throw err;
+     }
+     
+     var choiceArr = data.split(",");
+     command = choiceArr[0];
+     search = choiceArr[1];
+    
+
+     switch (command) {
+        case "my-tweets":
+            myTweets();
+            break;
+    
+        case "spotify-this-song":
+            spotifyThis();
+            break;
+    
+        case "movie-this":
+            movieThis();
+            break;
+    
+        case "do-what-it-says":
+            doWhatItSays();
+            break;
+    
+        default:
+            console.log("Please select a valid command. Those commands are my-tweets, spotify-this-song, movie-this, and do-what-it-says.")
+    }
+    
+ });
+}
