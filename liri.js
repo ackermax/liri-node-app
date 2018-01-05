@@ -119,7 +119,7 @@ function doWhatItSays() {
             break;
     
         case "do-what-it-says":
-            doWhatItSays();
+            console.log("I'm not doing an infinite loop over here. Grow up.")
             break;
     
         default:
