@@ -30,21 +30,21 @@ switch (command) {
         console.log("Please select a valid command. Those commands are my-tweets, spotify-this-song, movie-this, and do-what-it-says.")
 }
 
-<<<<<<< HEAD
+
 function myTweets() {
-    var params = {screen_name: 'maxmaxermax', count: 20};
-client.get('statuses/user_timeline', params, function(error, tweets, response) {
-  if (error) {
-      throw error
-  }
-  console.log(tweets[0].text);
-  for (var i = 0; i < tweets.length; i++){
-      console.log(tweets[i].text + " created at: " + tweets[i].created_at);
-  }
-});
+    var params = { screen_name: 'maxmaxermax', count: 20 };
+    client.get('statuses/user_timeline', params, function (error, tweets, response) {
+        if (error) {
+            throw error
+        }
+        console.log(tweets[0].text);
+        for (var i = 0; i < tweets.length; i++) {
+            console.log(tweets[i].text + " created at: " + tweets[i].created_at);
+        }
+    });
 }
 
-function spotifyThis() { 
+function spotifyThis() {
     var search = "";
     for (var i = 3; i < process.argv.length; i++) {
         var searchAdd = process.argv[i];
@@ -56,13 +56,13 @@ function spotifyThis() {
         }
     }
     console.log(search);
-    spotify.search({type: "track", query: search}, function(err, data){
+    spotify.search({ type: "track", query: search }, function (err, data) {
         if (err) {
             throw err;
         }
         var songResults = data.tracks.items
-   
-        for (var i = 0; i < songResults.length; i++){
+
+        for (var i = 0; i < songResults.length; i++) {
             console.log("-----------------------------------");
             console.log("Artist: " + songResults[i].artists[0].name);
             console.log("Song Title: " + songResults[i].name);
@@ -71,9 +71,36 @@ function spotifyThis() {
         }
     });
 }
-=======
-function myTweets() { }
-function spotifyThis() { }
->>>>>>> parent of 468c10b... added Twitter functionality
-function movieThis() { }
+
+function movieThis() {
+    var movieName = "";
+
+
+    for (var i = 3; i < process.argv.length; i++) {
+        if (i === 3) {
+            movieName += process.argv[i];
+        }
+        else {
+            movieName += " " + process.argv[i];
+        }
+    }
+
+    var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+
+    request(queryUrl, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            
+            console.log("--------------------------------------");
+            console.log("Title: " + JSON.parse(body).Title);
+            console.log("Relase Year: " + JSON.parse(body).Year);
+            console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
+            console.log("Tomatometer: " + JSON.parse(body).Ratings[1].Value);
+            console.log("Country of Production: " + JSON.parse(body).Country);
+            console.log("Language: " + JSON.parse(body).Language);
+            console.log("Plot Summary:");
+            console.log(JSON.parse(body).Plot);
+            console.log("Actors: " + JSON.parse(body).Actors);
+        }
+    });
+}
 function doWhatItSays() { }
