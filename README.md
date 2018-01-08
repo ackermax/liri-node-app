@@ -9,11 +9,11 @@ With Liri, you can give our (somewhat) smart Node.js-based command line tool a m
 1) After cloning down the repo add an .env file to the root folder.
 2) in the .env file add the following text with the proper keys from the Spoitify and Twitter API services:<br />
 <br />
-###Spoitify API keys
+Spoitify API keys<br />
 SPOTIFY_ID=*YOUR_KEY_HERE*<br />
 SPOTIFY_SECRET=*YOUR_KEY_HERE*<br />
 <br />
-###Twitter API keys
+Twitter API keys<br />
 TWITTER_CONSUMER_KEY=*YOUR_KEY_HERE*<br />
 TWITTER_CONSUMER_SECRET=*YOUR_KEY_HERE*<br />
 TWITTER_ACCESS_TOKEN_KEY=*YOUR_KEY_HERE*<br />
